@@ -30,7 +30,7 @@ pipeline {
     }
 		stage('Push Docker Image') {
 			steps {
-				sh 'docker push my-registry.com/my_customapp:1.0'
+				sh 'docker push my_customapp:1.0'
 			}
 		}
 		stage('Deploy to Container') {
