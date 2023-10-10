@@ -37,7 +37,7 @@ pipeline {
 		stage('Deploy to Container and Delete container after 5 min') {
 			steps {
 				script {
-                    def containerId = sh(script: 'docker run -d -p 8055:8080 my_customapp:1.0', returnStatus: true)
+                    def containerId = sh(script: 'docker run -d -p 8055:8080 my_customapp:1.0', , returnStdout: true).trim())
                     echo "Container ID: ${containerId}"
                     // Sleep for 5 minutes (300 seconds)
                     sleep 300
