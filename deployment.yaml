@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: abc_org
+  name: abc-org
 spec:
   replicas: 5
   selector:
     matchLabels:
-      app: abc_org
+      app: abc-org
   template:
     metadata:
       labels:
-        app: abc_org
+        app: abc-org
     spec:
       containers:
-      - name: abc_org
+      - name: abc-org
         image: siddharth2688/cicd_pipeline:image-1.0
         ports:
           - name: http
@@ -27,9 +27,9 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: abc_org-app-service
+  name: abc-org-app-service
   labels:
-    app: abc_org
+    app: abc-org
 spec:
   type: NodePort
   ports:
@@ -37,4 +37,4 @@ spec:
       targetPort: 8080
       nodePort: 31825
   selector:
-    app: abc_org
+    app: abc-org
