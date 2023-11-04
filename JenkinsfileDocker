@@ -3,41 +3,41 @@ pipeline {
     stages {
         stage('Compile Source Code') {
             steps {
-                sh 'mvn compile'  // Replace with your build command
+                sh 'mvn compile'
             }
         }
         stage('Test Source Code') {
             steps {
-                sh 'mvn test'  // Replace with your test command
+                sh 'mvn test'
             }
         }
         stage('Package Code') {
             steps {
-                sh 'mvn package'  // Replace with your packaging command
+                sh 'mvn package'
             }
         }
-		stage('Build Docker Image') {
+        stage('Build Docker Image') {
             steps {
-				sh 'docker build -t my_customapp:1.0 .'
-			}
-		}
-		stage('Login to Docker Hub') {
-			steps {
-				withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
-				sh "docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD"
-			}
+                script {
+                    sh "docker build -t image:1.0 ."
+                }
+            }
+        }
+        stage('Login to Docker Hub') {
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+                    sh "docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD"
+                }
+            }
+        }
+        stage('Push Docker Image') {
+            steps {
+                script {
+                    sh 'docker tag image:1.0 siddharth2688/cicd_pipeline:image-1.0'
+                    sh "docker push siddharth2688/cicd_pipeline:image-1.0"
+                }
+            }
         }
     }
-		stage('Push Docker Image') {
-			steps {
-			    sh 'docker tag my_customapp:1.0 siddharthsrivastava2688/cicd_pipeline:my_customapp-1.0' 
-				sh 'docker push siddharthsrivastava2688/cicd_pipeline:my_customapp-1.0'
-			}
-		}
-		stage('Deploy to Container') {
-			steps {
-				sh 'docker run -d -p 8085:8080 my_customapp:1.0'
-			}
-		}				
-    }
 }
+
