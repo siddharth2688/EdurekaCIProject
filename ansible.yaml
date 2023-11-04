@@ -1,0 +1,13 @@
+---
+- hosts: ansible-host
+  become: yes
+  tasks:
+    - name: Copy deployment file to Kubernetes master
+      copy:
+        src: deployment.yaml
+        dest: /root/
+
+    - name: Apply the Deployment to Kubernetes
+      k8s:
+        definition: /root/deployment.yaml
+        state: present
