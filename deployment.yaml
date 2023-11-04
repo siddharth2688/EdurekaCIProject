@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: abc_org
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      app: abc_org
+  template:
+    metadata:
+      labels:
+        app: abc_org
+    spec:
+      containers:
+      - name: abc_org
+        image: siddharth2688/cicd_pipeline:image-1.0
+        ports:
+          - name: http
+            containerPort: 8080
+        command:
+          - "/bin/sh"
+          - "-c"
+          - "sh /usr/local/tomcat/bin/startup.sh; while true; do echo hello; sleep 10; done"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: abc_org-app-service
+  labels:
+    app: abc_org
+spec:
+  type: NodePort
+  ports:
+    - port: 8080
+      targetPort: 8080
+      nodePort: 31825
+  selector:
+    app: abc_org
